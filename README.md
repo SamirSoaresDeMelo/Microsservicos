@@ -33,8 +33,8 @@ Resumo: o `user-service` persiste usuários no banco `employee_db` e, ao retorna
 
 1. Clonar repositório
 ```bash
-git clone https://github.com/seu-usuario/seu-repo-nome.git
-cd seu-repo-nome
+git clone https://github.com/SamirSoaresDeMelo/Microsservicos.git
+cd Microsservicos
 ```
 
 2. Criar bancos MySQL
