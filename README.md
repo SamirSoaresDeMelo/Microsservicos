@@ -1,37 +1,63 @@
-
 # Microsserviços — Gerenciamento de Usuários e Departamentos
 
-Projeto protótipo com duas aplicações Spring Boot independentes:
-- `department-service` — gerencia departamentos (porta 8080)
-- `user-service` — gerencia usuários e consulta departamentos via REST (porta 8081)
+Projeto **protótipo** composto por duas aplicações **Spring Boot independentes**, demonstrando comunicação entre microsserviços via REST.
 
-Resumo: o `user-service` persiste usuários no banco `employee_db` e, ao retornar dados completos, consome o `department-service` para incluir informações do departamento.
+## Arquitetura
+
+- **department-service**  
+  Responsável pelo gerenciamento de departamentos  
+  Porta: **8080**
+
+- **user-service**  
+  Responsável pelo gerenciamento de usuários e consumo do department-service  
+  Porta: **8081**
+
+### Resumo do funcionamento
+O **user-service** persiste usuários no banco `employee_db`.  
+Ao retornar os dados completos de um usuário, ele consome o **department-service** via REST para obter as informações do departamento associado.
+
+---
 
 ## Funcionalidades
-- Gerenciamento de departamentos
-- Comunicação entre serviços via RestTemplate
-- Persistência com MySQL
-- DTOs para transferência entre camadas
-- Estrutura em camadas (Controller → Service → Repository)
 
-## Tecnologias
-- Java 17
-- Spring Boot 2.7.x
-- Spring Web, Spring Data JPA
-- MySQL
-- Maven 
-- Lombok 1.18.30
+- Gerenciamento de departamentos
+- Gerenciamento de usuários
+- Comunicação entre microsserviços usando **RestTemplate**
+- Persistência de dados com **MySQL**
+- Uso de **DTOs** para transferência de dados
+- Arquitetura em camadas:
+  - Controller
+  - Service
+  - Repository
+
+---
+
+## Tecnologias Utilizadas
+
+- Java 17  
+- Spring Boot 2.7.x  
+- Spring Web  
+- Spring Data JPA  
+- MySQL 8.0  
+- Maven  
+- Lombok 1.18.30  
+
+---
 
 ## Pré-requisitos
+
 - Java 17
-- Maven 3.8+
+- Maven 3.8 ou superior
 - MySQL Server 8.0
-- IDE Eclipse e VS Code
+- IDE (Eclipse ou VS Code)
 - XAMPP 3.3.0
 
-## Configuração rápida
+---
 
-1. Clonar repositório
+## Configuração Rápida
+
+### 1. Clonar o repositório
+
 ```bash
 git clone https://github.com/SamirSoaresDeMelo/Microsservicos.git
 cd Microsservicos
@@ -72,55 +98,80 @@ mvn clean install
 cd ../user-service
 mvn clean install
 ```
-
 ## Executar (Windows)
-OBS: Lembre-se de iniciar o MySQL no XAMPP Control Panel  
-1. Iniciar primeiro o department-service:
-```powershell
+
+OBS: Lembre-se de iniciar o **MySQL** no **XAMPP Control Panel**.
+
+### 1. Iniciar primeiro o department-service
+
+```powershell 
 cd department-service
 mvn spring-boot:run
-```
-2. Iniciar o user-service em outro terminal:
-```powershell
+``` 
+
+### 2. Iniciar o user-service em outro terminal
+
+```powershell 
 cd user-service
 mvn spring-boot:run
-```
+``` 
+
+---
 
 ## Endpoints da API
-Instale no seu visual studio code a extensão Thunder Cliente no menu lateral esquerdo (Extensions) para consumir APIs ou use o Postman e faça requests para testar a aplicação com as seguintes configurações para:
 
-### Salvar um departamento:
-Method: POST  
-URL: http://localhost:8080/api/departments  
-Body (JSON):  
-{  
-  "departmentName": "TI",  
-  "departmentAddress": "Tecnologia da Informação",  
-  "departmentCode": "TI-001"  
+Instale no **Visual Studio Code** a extensão **Thunder Client** (menu lateral *Extensions*) para consumir APIs, ou utilize o **Postman** para realizar as requisições.
+
+### Salvar um departamento
+
+- **Method:** POST  
+- **URL:** http://localhost:8080/api/departments  
+- **Body (JSON):**
+
+```json 
+{
+  "departmentName": "TI",
+  "departmentAddress": "Tecnologia da Informação",
+  "departmentCode": "TI-001"
 }
+``` 
 
-### Obter departamento por ID:
-Method: GET  
-URL: http://localhost:8080/api/departments/1
+---
 
-### Salvar usuário:
-Method: POST  
-URL: http://localhost:8081/api/users  
-Body (JSON):  
-{  
-  "firstName": "Samir",  
-  "lastName": "Soares",  
-  "email": "samirsoaresdemelo@gmail.com",  
-  "departmentId": 1  
+### Obter departamento por ID
+
+- **Method:** GET  
+- **URL:** http://localhost:8080/api/departments/1
+
+---
+
+### Salvar usuário
+
+- **Method:** POST  
+- **URL:** http://localhost:8081/api/users  
+- **Body (JSON):**
+
+```json 
+{
+  "firstName": "Samir",
+  "lastName": "Soares",
+  "email": "samirsoaresdemelo@gmail.com",
+  "departmentId": 1
 }
+``` 
 
-### Obter usuário:
-Method: GET  
-URL: http://localhost:8081/api/users/1
-  
+---
+
+### Obter usuário por ID
+
+- **Method:** GET  
+- **URL:** http://localhost:8081/api/users/1
+
+---
+
 ## 📂 Estrutura do Projeto
 
-```bash
+```text 
 ├── department-service/
 │   └── src/main/java/net/javaguides/departmentservice/
 │       ├── controller/        # Controladores REST
@@ -137,17 +188,24 @@ URL: http://localhost:8081/api/users/1
         ├── repository/        # Repositórios Spring Data
         └── service/           # Lógica de negócio e integração
             └── impl/
-```
-Fluxo de Comunicação
+``` 
 
-- Cliente faz requisição para o User Service
-- User Service busca dados do usuário no banco employee_db
-- User Service chama o Department Service via REST para obter dados do departamento
-- Department Service retorna informações do departamento
+---
+
+## Fluxo de Comunicação
+
+- Cliente faz requisição para o **User Service**
+- User Service busca os dados do usuário no banco **employee_db**
+- User Service chama o **Department Service** via REST para obter os dados do departamento
+- Department Service retorna as informações do departamento
 - User Service combina os dados e retorna a resposta completa ao cliente
 
---- 
-Projeto criado por meio do tutorial disponível no link: https://www.javaguides.net/2022/10/spring-boot-microservices-communication-using-resttemplate.html
+---
+
+## Referências
+
+Projeto criado por meio do tutorial disponível no link:  
+https://www.javaguides.net/2022/10/spring-boot-microservices-communication-using-resttemplate.html
 
 
 
